@@ -1,0 +1,294 @@
+package currencyConverter;
+
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.TitledBorder;
+
+
+//**GUI USING JAVA SWING**//
+public class MySwing //extends JFrame implements ActionListener
+{
+	//main method
+
+	public static void main(String[] args) 
+	{	
+	
+	//create Frame
+	JFrame frame = new JFrame("Currency Converter");
+	
+
+//BUTTONS
+	//create convert button
+	JButton convertbtn = new JButton("Convert");
+	convertbtn.setFont(new Font("Serif", Font.BOLD, 18));
+	convertbtn.setSize(20,30);
+	
+	
+	//create exit button
+	JButton exitbtn = new JButton("Exit");
+	exitbtn.setFont(new Font("Serif", Font.BOLD, 18));
+	exitbtn.setSize(20,30);
+	
+	//create reset button
+	JButton resetbtn = new JButton("Reset");
+	resetbtn.setFont(new Font("Serif", Font.BOLD, 18));
+	resetbtn.setSize(20,30);
+	
+	//create JComboBox(banks)
+	String[] banks = {"AIB","BOI","ULSTER BANK"};
+	JComboBox blist = new JComboBox(banks);
+	blist.setFont(new Font("Serif", Font.BOLD, 18));
+	blist.setSize(20, 50);
+
+
+	//create bottomPanel
+	JPanel bottomPanel = new JPanel();
+	bottomPanel.setBorder(new TitledBorder(""));
+	
+	//create blankLabels for padding (not best practice but as a last minute display feature)
+	JLabel blankLabel1 = new JLabel();
+	JLabel blankLabel2 = new JLabel();
+	JLabel blankLabel3 = new JLabel();
+
+	//create bankLabel
+	JLabel bankLabel = new JLabel("Choose a bank", SwingConstants.CENTER);
+	bankLabel.setFont(new Font("Serif", Font.BOLD, 18));
+	bankLabel.setSize(20, 30);
+
+	//**USER ENTER AMOUNT VIA KEYBOARD**//
+	//create userAmnt textfield
+	JTextField userAmnt = new JTextField(10);
+	userAmnt.setFont(new Font("Serif", Font.BOLD, 18));
+	userAmnt.setEditable(true);
+
+
+	//create new JLabel named conversionRate to store ratesArray items
+	JLabel conversionResult1 = new JLabel();
+	conversionResult1.setSize(10,10);
+	conversionResult1.setFont(new Font("Serif", Font.BOLD, 18));
+	conversionResult1.setVisible(false);
+	JLabel conversionResult2 = new JLabel();
+	conversionResult2.setSize(10,10);
+	conversionResult2.setFont(new Font("Serif", Font.BOLD, 18));
+	conversionResult2.setVisible(false);
+	
+	//conversionRate JLabel to show rates of different banks
+	JLabel conversionRate = new JLabel();
+	conversionRate.setFont(new Font("Serif", Font.BOLD, 18));
+	
+
+	//adding buttons to bottomPanel
+	bottomPanel.add(convertbtn);
+	bottomPanel.add(blankLabel1);
+	bottomPanel.add(resetbtn);
+	bottomPanel.add(blankLabel2);
+	bottomPanel.add(exitbtn);
+	bottomPanel.add(blankLabel3);
+	bottomPanel.setLayout(new GridLayout(10,8));
+	
+	
+	//create topPanel
+	JPanel topPanel = new JPanel();
+	topPanel.setBorder(new TitledBorder(""));
+	topPanel.setLayout(new GridLayout(10,8));
+	
+	//create topLabel
+//**DEFAULT CURRENCY IS € EURO**//
+	JLabel topLabel = new JLabel("Enter amount in €", SwingConstants.CENTER);
+	topLabel.setFont(new Font("Serif", Font.BOLD, 18));
+	topLabel.setSize(20, 50);
+	
+	//create midLabel
+	JLabel midLabel = new JLabel("Choose currency", SwingConstants.CENTER);
+	midLabel.setFont(new Font("Serif", Font.BOLD, 18));
+	midLabel.setSize(20, 50);
+	
+	//create JComboBox(currencies)
+	String[] currencies = {"GBP £","USD $"};
+	JComboBox clist = new JComboBox(currencies);
+	clist.setFont(new Font("Serif", Font.BOLD, 18));
+	clist.setSize(50, 50);
+	
+	
+	//add components to topPanel
+	topPanel.add(topLabel);
+	topPanel.add(userAmnt);
+	topPanel.add(midLabel);
+	topPanel.add(clist);
+	topPanel.add(conversionResult1);
+	topPanel.add(conversionResult2);
+	topPanel.add(bankLabel);
+	topPanel.add(blist);
+	topPanel.add(conversionRate);
+
+
+	//add JPanels to JFrame
+	frame.add(topPanel);
+	frame.add(bottomPanel);
+	
+//ACTION LISTENERS
+	//resetbtn action - resets all events that have taken place to null/0
+	resetbtn.addActionListener(new ActionListener() {
+		
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{	
+		userAmnt.setText(null);
+		clist.setSelectedIndex(0);
+		blist.setSelectedIndex(0);
+		conversionResult1.setText(null);
+		conversionResult2.setText(null);
+		conversionRate.setText(null);
+		
+	}
+	});
+	
+
+	
+	/*convertbtn action 
+	 * - gets userAmnt entry from JTextfield, casts it to a double type
+s	 * - performs calculation on it to convert it to respective currency*/
+			convertbtn.addActionListener(new ActionListener() {
+				
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+			
+				double GBP = 0.89;
+				double USD = 1.18;
+				double calculation1 = Double.parseDouble(userAmnt.getText()) * GBP;
+				double calculation2 = Double.parseDouble(userAmnt.getText()) * USD;
+				
+				conversionResult1.setText("Conversion result is:  "+ calculation1);
+				conversionResult2.setText("Conversion result is:  "+ calculation2);
+			}
+			});
+			
+	
+	//exitbtn action
+		//- closes application
+			exitbtn.addActionListener(new ActionListener() {
+				
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				System.exit(0);
+			}
+			});
+			
+			
+			
+	/*clist action
+	 * 	- sets conversionResult visible(false), until GBP is selected.
+			- sets conversionResult visible(false), until USD is selected.*/
+			clist.addActionListener(new ActionListener() {
+	
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				
+				if(e.getSource() == clist)
+					{					
+						conversionResult1.setVisible(false);
+						conversionResult2.setVisible(false);
+						
+						if (clist.getSelectedItem().equals("GBP £"))
+						{
+							conversionResult1.setVisible(true);
+						}
+							
+						else if (clist.getSelectedItem().equals("USD $"))
+						{
+							conversionResult2.setVisible(true);
+						}
+					}
+				}
+			});
+			
+//**CONVERSION RATE OF BANKS CHOSEN BY USER**//	
+			/*blist action
+			 * - displays the conversion rate for respective banks based 
+			 * on which combobox selection user has made*/
+			blist.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				
+				if(e.getSource() == blist)
+					{
+						if (blist.getSelectedItem().equals("AIB"))
+						{							
+							conversionRate.setText("Conversion rate is: " + 0.02);
+						}
+						
+						else if (blist.getSelectedItem().equals("BOI"))
+						{
+							conversionRate.setText("Conversion rate is: " + 0.03);
+						}
+						else if (blist.getSelectedItem().equals("ULSTER BANK"))
+						{
+							conversionRate.setText("Conversion rate is: " + 0.04);
+						}
+					}
+				}
+
+			
+			});
+			
+			//FRAME 
+			frame.setSize(600,700);
+			frame.setLocationRelativeTo(null);
+			frame.setLayout(new GridLayout(2,8));
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setVisible(true);
+			
+				
+			}
+
+			
+		}
+
+	
+//**CONVERSION RATE OF BANKS CHOSEN BY USER**//	
+
+			
+			//PrintWriter out = null;
+		/*
+				BufferedReader br = new BufferedReader (new FileReader("commissionRates.txt"));
+				
+				String info = br.readLine();
+				int i = 0;
+				
+				while (info != null)
+				{
+					
+					String[] cmnRatesArray = info.split(" ");
+					
+					double parse = Double.parseDouble(cmnRatesArray[i]);
+					
+					frame.commissionArea.add(parse);
+							
+					info = br.readLine();
+					
+				
+				  
+				br.close();
+			}*/
+		
+		/*public void ToConvert{
+			
+			if userAmnt.equals(conversionRates(0))
+		}*/
+
+
